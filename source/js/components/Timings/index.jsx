@@ -7,12 +7,14 @@ import * as styles from './styles.css'
 const Timings = (props) => {
   const tableData = props.processes.map((proc) => {
     const t = proc.timings
-    const turnaround = (t.completion - t.start) / 1000
+    const burst = proc.cputime.required
+    const turnaround = t.completion - t.start
+    const waiting = turnaround - burst
 
     return ([
       proc.id,
-      'kek',
-      'lul',
+      burst,
+      waiting,
       turnaround
     ])
   })

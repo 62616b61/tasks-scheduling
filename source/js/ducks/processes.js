@@ -59,11 +59,26 @@ function generateNewTask () {
   }
 }
 
-export const createProcess = () => ({type: CREATE_PROCESS})
+export function createProcess () {
+  return (dispatch, getState) => {
+    const tick = getState().timer.ticks
+    dispatch({type: CREATE_PROCESS, tick})
+  }
+}
 
-const resolveProcess = (id) => ({type: RESOLVE_PROCESS, id})
+export function resolveProcess (id) {
+  return (dispatch, getState) => {
+    const tick = getState().timer.ticks
+    dispatch({type: RESOLVE_PROCESS, id, tick})
+  }
+}
 
-const allocateCPUTime = (id) => ({type: ALLOCATE_CPUTIME, id})
+export function allocateCPUTime (id) {
+  return (dispatch, getState) => {
+    const tick = getState().timer.ticks
+    dispatch({type: ALLOCATE_CPUTIME, id, tick})
+  }
+}
 
 const adjustStrategy = (strategy, key, value) => {
   return {
@@ -104,7 +119,7 @@ export default function processesReducer (state = INITIAL_STATE, action) {
             {
               id: state.list.lastId,
               timings: {
-                arrival: new Date(),
+                arrival: action.tick,
                 start: null,
                 completion: null
               },
@@ -118,7 +133,7 @@ export default function processesReducer (state = INITIAL_STATE, action) {
       }
     case RESOLVE_PROCESS:
       const process = state.list.current.find(x => x.id === action.id)
-      process.timings.completion = new Date()
+      process.timings.completion = action.tick
 
       return {
         ...state,
@@ -136,7 +151,7 @@ export default function processesReducer (state = INITIAL_STATE, action) {
       state.list.current[index].cputime.done++
 
       if (!state.list.current[index].timings.start) {
-        state.list.current[index].timings.start = new Date()
+        state.list.current[index].timings.start = action.tick
       }
 
       return {

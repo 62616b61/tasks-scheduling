@@ -24,7 +24,7 @@ class Home extends React.Component {
     let timer = setInterval(() => {
       this.props.TimerTick()
       this.props.ProcTick()
-    }, 200)
+    }, 10)
     this.setState({timer})
   }
 
@@ -36,22 +36,13 @@ class Home extends React.Component {
     return (
       <Flex justify='center' wrap>
         <Flex col={10}>
-          <Box
-            col={2}
-            p={2}
-          >
+          <Box col={2} p={2}>
             <Timer />
           </Box>
-          <Box
-            col={7}
-            p={2}
-          >
+          <Box col={6} p={2}>
             <Processes />
           </Box>
-          <Box
-            col={3}
-            p={2}
-          >
+          <Box col={4} p={2}>
             <Timings />
           </Box>
         </Flex>

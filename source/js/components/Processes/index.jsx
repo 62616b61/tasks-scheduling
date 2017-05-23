@@ -17,11 +17,16 @@ const Processes = (props) => {
   })
 
   return (
-    <Flex>
-      <Box
-        col={12}
-      >
-        <h5>Processes</h5>
+    <Flex wrap>
+      <Box col={2}>
+        <h5>Active</h5>
+        <h1>{props.processes.length}</h1>
+      </Box>
+      <Box col={4}>
+        <h5>Resolved</h5>
+        <h1>{props.numOfResolved}</h1>
+      </Box>
+      <Box col={12}>
         <Box className={styles.wrapper}>
           <Table
             data={tableData}
@@ -40,7 +45,8 @@ const Processes = (props) => {
 export default connect(
   (state) => {
     return {
-      processes: state.processes.list.current
+      processes: state.processes.list.current,
+      numOfResolved: state.processes.list.resolved.length
     }
   }
 )(Processes)
