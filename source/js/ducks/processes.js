@@ -2,22 +2,25 @@ const CREATE_PROCESS = 'processes/CREATE_PROCESS'
 const RESOLVE_PROCESS = 'processes/RESOLVE_PROCESS'
 const ALLOCATE_CPUTIME = 'processes/ALLOCATE_CPUTIME'
 const ADJUST_STRATEGY = 'processes/ADJUST_STRATEGY'
+const PURGE = 'processes/PURGE'
 
 export function Init () {
   return (dispatch, getState) => {
     const currProcs = getState().processes.list.current
 
     if (!currProcs.length) {
-      for (let i = 0; i < 5; i++) dispatch(createProcess())
+      for (let i = 0; i < 3; i++) dispatch(createProcess())
     }
   }
 }
+
+export const Purge = () => ({type: PURGE})
 
 export function Tick () {
   return (dispatch, getState) => {
     dispatch(generateNewTask())
 
-    const strategy = 'RR'
+    const strategy = getState().strategy.strategy
     const currProcs = getState().processes.list.current
 
     if (!currProcs.length) return
@@ -147,7 +150,7 @@ const INITIAL_STATE = {
 export default function processesReducer (state = INITIAL_STATE, action) {
   switch (action.type) {
     case CREATE_PROCESS:
-      const cputime = Math.floor(Math.random() * 10) + 10
+      const cputime = Math.floor(Math.random() * 10) + 5
 
       return {
         ...state,
@@ -173,6 +176,8 @@ export default function processesReducer (state = INITIAL_STATE, action) {
           ]
         }
       }
+    case PURGE:
+      return INITIAL_STATE
     case RESOLVE_PROCESS:
       const process = state.list.current.find(x => x.id === action.id)
       process.timings.completion = action.tick

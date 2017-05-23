@@ -6,6 +6,7 @@ import { Tick as ProcTick, Init as ProcInit } from 'ducks/processes'
 import { Tick as TimerTick, Start as TimerStart } from 'ducks/timer'
 
 import Timer from 'components/Timer'
+import StrategySelector from 'components/StrategySelector'
 import Processes from 'components/Processes'
 import Timings from 'components/Timings'
 
@@ -24,7 +25,7 @@ class Home extends React.Component {
     let timer = setInterval(() => {
       this.props.TimerTick()
       this.props.ProcTick()
-    }, 10)
+    }, 20)
     this.setState({timer})
   }
 
@@ -38,6 +39,7 @@ class Home extends React.Component {
         <Flex col={10}>
           <Box col={2} p={2}>
             <Timer />
+            <StrategySelector />
           </Box>
           <Box col={6} p={2}>
             <Processes />
