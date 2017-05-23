@@ -53,9 +53,6 @@ function generateNewTask () {
 
   return (dispatch, getState) => {
     const numOfProcs = getState().processes.list.current.length
-
-    console.log(numOfProcs)
-
     if (chance <= thresholdToSpawn && numOfProcs < 15) {
       dispatch(createProcess())
     }
