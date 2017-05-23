@@ -17,7 +17,7 @@ export function Tick () {
   return (dispatch, getState) => {
     dispatch(generateNewTask())
 
-    const strategy = 'LCFS'
+    const strategy = 'SJN'
     const currProcs = getState().processes.list.current
 
     if (!currProcs.length) return
@@ -47,6 +47,19 @@ export function Tick () {
           break
         case 'LCFS':
           dispatch(allocateCPUTime(currProcs[currProcs.length - 1].id))
+          break
+        case 'SJN':
+          if (currProcs.length > 0) {
+            const minJob = (p, c) => {
+              const pcp = p.cputime
+              const ccp = c.cputime
+              return (pcp.required - pcp.done < ccp.required - ccp.done) ? p : c
+            }
+            const minJobProc = currProcs.reduce(minJob)
+            dispatch(allocateCPUTime(minJobProc.id))
+          } else {
+            dispatch(allocateCPUTime(currProcs[0].id))
+          }
           break
       }
     }
