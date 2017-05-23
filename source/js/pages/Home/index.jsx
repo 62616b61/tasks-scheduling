@@ -7,6 +7,7 @@ import { Tick as TimerTick, Start as TimerStart } from 'ducks/timer'
 
 import Timer from 'components/Timer'
 import Processes from 'components/Processes'
+import Timings from 'components/Timings'
 
 class Home extends React.Component {
   constructor (props) {
@@ -23,7 +24,7 @@ class Home extends React.Component {
     let timer = setInterval(() => {
       this.props.TimerTick()
       this.props.ProcTick()
-    }, 50)
+    }, 200)
     this.setState({timer})
   }
 
@@ -51,7 +52,7 @@ class Home extends React.Component {
             col={3}
             p={2}
           >
-            Hey
+            <Timings />
           </Box>
         </Flex>
       </Flex>
