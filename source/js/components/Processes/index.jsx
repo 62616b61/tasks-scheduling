@@ -11,8 +11,8 @@ const Processes = (props) => {
 
     return ([
       proc.id,
-      <Progress color='primary' value={done} />,
-      cputime.done + '/' + cputime.required
+      cputime.done + '/' + cputime.required,
+      <Progress style={{width:'300px'}} color='primary' value={done} />
     ])
   })
 
@@ -32,8 +32,8 @@ const Processes = (props) => {
             data={tableData}
             headings={[
               '#',
-              'Progress',
-              ''
+              '',
+              'Progress'
             ]}
           />
         </Box>

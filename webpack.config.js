@@ -176,7 +176,6 @@ module.exports = {
       'isomorphic-fetch',
       'react-dom',
       'react-redux',
-      'react-router',
       'react',
       'redux-thunk',
       'redux'

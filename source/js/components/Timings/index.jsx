@@ -9,7 +9,7 @@ const Timings = (props) => {
     const t = proc.timings
     const burst = proc.cputime.required
     const turnaround = t.completion - t.start
-    const waiting = turnaround - burst
+    const waiting = t.waiting
 
     return ([
       proc.id,
