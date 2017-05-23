@@ -17,7 +17,7 @@ export function Tick () {
   return (dispatch, getState) => {
     dispatch(generateNewTask())
 
-    const strategy = 'RR'
+    const strategy = 'FCFS'
     const currProcs = getState().processes.list.current
 
     if (!currProcs.length) return
@@ -42,6 +42,8 @@ export function Tick () {
             dispatch(adjustStrategy('RR', 'id', currProcs[0].id))
           }
           break
+        case 'FCFS':
+          dispatch(allocateCPUTime(currProcs[0].id))
       }
     }
   }
@@ -121,7 +123,8 @@ export default function processesReducer (state = INITIAL_STATE, action) {
               timings: {
                 arrival: action.tick,
                 start: null,
-                completion: null
+                completion: null,
+                waiting: 0
               },
               cputime: {
                 required: cputime,
@@ -154,14 +157,18 @@ export default function processesReducer (state = INITIAL_STATE, action) {
         state.list.current[index].timings.start = action.tick
       }
 
+      const incWaitingTime = x => {
+        x.timings.waiting++
+        return x
+      }
       return {
         ...state,
         list: {
           ...state.list,
           current: [
-            ...state.list.current.slice(0, index),
+            ...state.list.current.slice(0, index).map(incWaitingTime),
             state.list.current[index],
-            ...state.list.current.slice(index + 1)
+            ...state.list.current.slice(index + 1).map(incWaitingTime)
           ]
         }
       }
