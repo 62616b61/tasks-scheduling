@@ -17,7 +17,7 @@ export function Tick () {
   return (dispatch, getState) => {
     dispatch(generateNewTask())
 
-    const strategy = 'FCFS'
+    const strategy = 'LCFS'
     const currProcs = getState().processes.list.current
 
     if (!currProcs.length) return
@@ -44,6 +44,10 @@ export function Tick () {
           break
         case 'FCFS':
           dispatch(allocateCPUTime(currProcs[0].id))
+          break
+        case 'LCFS':
+          dispatch(allocateCPUTime(currProcs[currProcs.length - 1].id))
+          break
       }
     }
   }
