@@ -11,8 +11,8 @@ const Processes = (props) => {
 
     return ([
       proc.id,
-      cputime.done + '/' + cputime.required,
-      <Progress style={{width:'300px'}} color='primary' value={done} />
+      <div style={{width: '40px'}}>{cputime.done + '/' + cputime.required}</div>,
+      <Progress style={{width: '300px'}} color='primary' value={done} />
     ])
   })
 
