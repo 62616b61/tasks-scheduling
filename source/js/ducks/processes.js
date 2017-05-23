@@ -67,12 +67,10 @@ export function Tick () {
           dispatch(allocateCPUTime(currProcs[currProcs.length - 1].id))
           break
         case 'SJN':
-          if (currProcs.length > 0) {
-            const sjnId = getState().processes.strategy.SJN.id
-            dispatch(allocateCPUTime(sjnId))
-          } else {
-            dispatch(allocateCPUTime(currProcs[0].id))
-          }
+          const sjnId = getState().processes.strategy.SJN.id
+
+          if (doesExist(sjnId)) dispatch(allocateCPUTime(sjnId))
+          else dispatch(allocateCPUTime(currProcs[0].id))
           break
         case 'SRT':
           if (currProcs.length > 0) {
