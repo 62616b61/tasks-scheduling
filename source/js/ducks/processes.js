@@ -53,20 +53,32 @@ function generateNewTask () {
 
   return (dispatch, getState) => {
     const numOfProcs = getState().processes.list.current.length
-
-    console.log(numOfProcs)
-
-    if (chance <= thresholdToSpawn && numOfProcs < 15) {
+    if (chance <= thresholdToSpawn && numOfProcs < 20) {
       dispatch(createProcess())
     }
   }
 }
 
-export const createProcess = () => ({type: CREATE_PROCESS})
+export function createProcess () {
+  return (dispatch, getState) => {
+    const tick = getState().timer.ticks
+    dispatch({type: CREATE_PROCESS, tick})
+  }
+}
 
-const resolveProcess = (id) => ({type: RESOLVE_PROCESS, id})
+export function resolveProcess (id) {
+  return (dispatch, getState) => {
+    const tick = getState().timer.ticks
+    dispatch({type: RESOLVE_PROCESS, id, tick})
+  }
+}
 
-const allocateCPUTime = (id) => ({type: ALLOCATE_CPUTIME, id})
+export function allocateCPUTime (id) {
+  return (dispatch, getState) => {
+    const tick = getState().timer.ticks
+    dispatch({type: ALLOCATE_CPUTIME, id, tick})
+  }
+}
 
 const adjustStrategy = (strategy, key, value) => {
   return {
@@ -94,7 +106,7 @@ const INITIAL_STATE = {
 export default function processesReducer (state = INITIAL_STATE, action) {
   switch (action.type) {
     case CREATE_PROCESS:
-      const cputime = Math.floor(Math.random() * 50) + 10
+      const cputime = Math.floor(Math.random() * 10) + 10
 
       return {
         ...state,
@@ -106,9 +118,11 @@ export default function processesReducer (state = INITIAL_STATE, action) {
             // push new process
             {
               id: state.list.lastId,
-              arrival: new Date(),
-              start: null,
-              completion: null,
+              timings: {
+                arrival: action.tick,
+                start: null,
+                completion: null
+              },
               cputime: {
                 required: cputime,
                 done: 0
@@ -118,7 +132,8 @@ export default function processesReducer (state = INITIAL_STATE, action) {
         }
       }
     case RESOLVE_PROCESS:
-      const proc = state.list.current.find(x => x.id === action.id)
+      const process = state.list.current.find(x => x.id === action.id)
+      process.timings.completion = action.tick
 
       return {
         ...state,
@@ -127,13 +142,17 @@ export default function processesReducer (state = INITIAL_STATE, action) {
           current: state.list.current.filter(proc => proc.id !== action.id),
           resolved: [
             ...state.list.resolved,
-            proc
+            process
           ]
         }
       }
     case ALLOCATE_CPUTIME:
       const index = state.list.current.findIndex(x => x.id === action.id)
       state.list.current[index].cputime.done++
+
+      if (!state.list.current[index].timings.start) {
+        state.list.current[index].timings.start = action.tick
+      }
 
       return {
         ...state,

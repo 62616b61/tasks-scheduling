@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Flex, Box } from 'reflexbox'
 import { Table, Progress } from 'rebass'
+import * as styles from './styles.css'
 
 const Processes = (props) => {
   const tableData = props.processes.map((proc) => {
@@ -16,19 +17,26 @@ const Processes = (props) => {
   })
 
   return (
-    <Flex>
-      <Box
-        col={12}
-      >
-        <h5>Processes</h5>
-        <Table
-          data={tableData}
-          headings={[
-            '#',
-            'Progress',
-            ''
-          ]}
-        />
+    <Flex wrap>
+      <Box col={2}>
+        <h5>Active</h5>
+        <h1>{props.processes.length}</h1>
+      </Box>
+      <Box col={4}>
+        <h5>Resolved</h5>
+        <h1>{props.numOfResolved}</h1>
+      </Box>
+      <Box col={12}>
+        <Box className={styles.wrapper}>
+          <Table
+            data={tableData}
+            headings={[
+              '#',
+              'Progress',
+              ''
+            ]}
+          />
+        </Box>
       </Box>
     </Flex>
   )
@@ -37,7 +45,8 @@ const Processes = (props) => {
 export default connect(
   (state) => {
     return {
-      processes: state.processes.list.current
+      processes: state.processes.list.current,
+      numOfResolved: state.processes.list.resolved.length
     }
   }
 )(Processes)
