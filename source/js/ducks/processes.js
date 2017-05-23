@@ -48,7 +48,7 @@ export function Tick () {
         case 'LCFS':
           dispatch(allocateCPUTime(currProcs[currProcs.length - 1].id))
           break
-        case 'SJN':
+        case 'SRT':
           if (currProcs.length > 0) {
             const minJob = (p, c) => {
               const pcp = p.cputime
