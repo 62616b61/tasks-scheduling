@@ -8,7 +8,7 @@ export function Init () {
     const currProcs = getState().processes.list.current
 
     if (!currProcs.length) {
-      for (let i = 0; i < 2; i++) dispatch(createProcess())
+      for (let i = 0; i < 5; i++) dispatch(createProcess())
     }
   }
 }
@@ -17,7 +17,7 @@ export function Tick () {
   return (dispatch, getState) => {
     dispatch(generateNewTask())
 
-    const strategy = 'SJN'
+    const strategy = 'RR'
     const currProcs = getState().processes.list.current
 
     if (!currProcs.length) return
@@ -25,11 +25,26 @@ export function Tick () {
     const ifResolved = x => x.cputime.required === x.cputime.done
     const resolvedProcess = currProcs.find(ifResolved)
 
-    if (resolvedProcess) dispatch(resolveProcess(resolvedProcess.id))
-    else {
+    // necessary for RR and SJN strategies
+    const doesExist = id => currProcs.find(x => x.id === id)
+
+    // necessary for SJN and SRT strategies
+    const minJob = (p, c) => {
+      const pcp = p.cputime
+      const ccp = c.cputime
+      return (pcp.required - pcp.done < ccp.required - ccp.done) ? p : c
+    }
+
+    if (resolvedProcess) {
+      dispatch(resolveProcess(resolvedProcess.id))
+      const rmvResolved = x => x.id !== resolvedProcess.id
+      if (strategy === 'SJN' & currProcs.filter(rmvResolved).length > 0) {
+        const minJobProc = currProcs.filter(rmvResolved).reduce(minJob)
+        dispatch(adjustStrategy('SJN', 'id', minJobProc.id))
+      }
+    } else {
       switch (strategy) {
         case 'RR':
-          const doesExist = id => currProcs.find(x => x.id === id)
           const rrId = getState().processes.strategy.RR.id
 
           if (doesExist(rrId)) dispatch(allocateCPUTime(rrId))
@@ -48,13 +63,16 @@ export function Tick () {
         case 'LCFS':
           dispatch(allocateCPUTime(currProcs[currProcs.length - 1].id))
           break
+        case 'SJN':
+          if (currProcs.length > 0) {
+            const sjnId = getState().processes.strategy.SJN.id
+            dispatch(allocateCPUTime(sjnId))
+          } else {
+            dispatch(allocateCPUTime(currProcs[0].id))
+          }
+          break
         case 'SRT':
           if (currProcs.length > 0) {
-            const minJob = (p, c) => {
-              const pcp = p.cputime
-              const ccp = c.cputime
-              return (pcp.required - pcp.done < ccp.required - ccp.done) ? p : c
-            }
             const minJobProc = currProcs.reduce(minJob)
             dispatch(allocateCPUTime(minJobProc.id))
           } else {
@@ -116,6 +134,10 @@ const INITIAL_STATE = {
   },
   strategy: {
     RR: {
+      // is used to store an ID of last task to allocate cputime to
+      id: 0
+    },
+    SJN: {
       // is used to store an ID of last task to allocate cputime to
       id: 0
     }
