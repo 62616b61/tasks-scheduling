@@ -17,7 +17,6 @@ class Home extends React.Component {
   componentDidMount () {
     let timer = setInterval(() => {
       this.props.TimerTick()
-      this.props.BankerTick()
     }, 1000)
     this.setState({timer})
   }
