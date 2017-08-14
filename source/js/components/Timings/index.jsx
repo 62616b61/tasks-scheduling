@@ -4,6 +4,7 @@ import { Flex, Box } from 'reflexbox'
 import * as styles from './styles.css'
 
 const Timings = (props) => {
+  const headings = ['#', 'Burst time', 'Waiting time', 'Turnaround time']
   const tableData = props.processes.map((proc) => {
     const t = proc.timings
     const burst = proc.cputime.required
@@ -23,7 +24,24 @@ const Timings = (props) => {
       <Box  w={1}>
         <h5>Timings</h5>
         <Box className={styles.wrapper}>
-          <p>put table 'ere</p>
+          <table>
+            <thead>
+              <tr>
+                {headings.map((heading, i) => (
+                  <th key={i}>{heading}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {tableData.map((row, i) => (
+                <tr key={i}>
+                  {row.map((d, j) => (
+                    <td key={j}>{d}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </Box>
       </Box>
     </Flex>
