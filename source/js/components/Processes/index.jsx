@@ -5,6 +5,7 @@ import { Progress } from 'rebass'
 import * as styles from './styles.css'
 
 const Processes = (props) => {
+  const headings = ['#', '', 'Progress']
   const tableData = props.processes.map((proc) => {
     const cputime = proc.cputime
     const done = cputime.done / cputime.required
@@ -28,7 +29,24 @@ const Processes = (props) => {
       </Box>
       <Box w={1}>
         <Box className={styles.wrapper}>
-          <p>put table 'ere</p>
+          <table>
+            <thead>
+              <tr>
+                 {headings.map((heading, i) => (
+                   <th key={i}>{heading}</th>
+                 ))}
+              </tr>
+            </thead>
+            <tbody>
+              {tableData.map((row, i) => (
+                <tr key={i}>
+                  {row.map((d, j) => (
+                    <td key={j}>{d}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </Box>
       </Box>
     </Flex>
