@@ -11,15 +11,11 @@ const Timer = (props) => {
     <Flex
       wrap
     >
-      <Box
-        col={8}
-      >
+      <Box w={2 / 3}>
         <h5>Ticks</h5>
         <h1>{props.ticks}</h1>
       </Box>
-      <Box
-        col={4}
-      >
+      <Box w={1 / 3}>
         <h5>Seconds</h5>
         <h1>{difference}</h1>
       </Box>

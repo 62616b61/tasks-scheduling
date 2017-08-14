@@ -12,13 +12,12 @@ const StrategySelector = (props) => {
       label={strategy}
       name={strategy}
       checked={props.strategy === strategy}
-      circle={false}
       onChange={() => props.SelectStrategy(strategy)}
     />
   })
 
   return (
-    <Box col={8}>
+    <Box w={2/3}>
       <h5>Strategy</h5>
       {radios}
     </Box>
