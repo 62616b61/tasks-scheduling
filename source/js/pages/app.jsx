@@ -10,7 +10,7 @@ const Root = (props) => {
   return (
     <Provider store={props.store}>
       <Flex wrap>
-        <Box col={12}>
+        <Box w={1}>
           <Home />
         </Box>
       </Flex>

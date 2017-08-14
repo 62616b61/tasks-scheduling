@@ -1,8 +1,15 @@
 {
   "presets": [
-    ["es2015", { "modules": false }],
-    "react",
-    "stage-0"
+    [
+      "env",
+      {
+        "targets": {
+          "node": "6.10",
+          "uglify": true
+        }
+      }
+    ],
+    "react"
   ],
   "env": {
     "development": {
@@ -10,5 +17,13 @@
         "react-hmre"
       ]
     }
-  }
+  },
+  "plugins": [
+  [
+    "transform-object-rest-spread",
+    {
+      "useBuiltIns": true
+    }
+  ]
+]
 }

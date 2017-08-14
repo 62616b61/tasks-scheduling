@@ -35,19 +35,17 @@ class Home extends React.Component {
 
   render () {
     return (
-      <Flex justify='center' wrap>
-        <Flex col={10}>
-          <Box col={2} p={2}>
-            <Timer />
-            <StrategySelector />
-          </Box>
-          <Box col={6} p={2}>
-            <Processes />
-          </Box>
-          <Box col={4} p={2}>
-            <Timings />
-          </Box>
-        </Flex>
+      <Flex justify='center'>
+        <Box w={1 / 6} p={2}>
+          <Timer />
+          <StrategySelector />
+        </Box>
+        <Box w={1 / 2} p={2}>
+          <Processes />
+        </Box>
+        <Box w={1 / 3} p={2}>
+          <Timings />
+        </Box>
       </Flex>
     )
   }

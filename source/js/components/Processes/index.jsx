@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Flex, Box } from 'reflexbox'
-import { Table, Progress } from 'rebass'
+import { Progress } from 'rebass'
 import * as styles from './styles.css'
 
 const Processes = (props) => {
@@ -17,25 +17,18 @@ const Processes = (props) => {
   })
 
   return (
-    <Flex wrap>
-      <Box col={2}>
+    <Flex>
+      <Box w={1 / 6}>
         <h5>Active</h5>
         <h1>{props.processes.length}</h1>
       </Box>
-      <Box col={4}>
+      <Box w={1 / 3}>
         <h5>Resolved</h5>
         <h1>{props.numOfResolved}</h1>
       </Box>
-      <Box col={12}>
+      <Box w={1}>
         <Box className={styles.wrapper}>
-          <Table
-            data={tableData}
-            headings={[
-              '#',
-              '',
-              'Progress'
-            ]}
-          />
+          <p>put table 'ere</p>
         </Box>
       </Box>
     </Flex>

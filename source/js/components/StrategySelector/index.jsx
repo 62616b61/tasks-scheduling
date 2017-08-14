@@ -7,18 +7,19 @@ import { Select as SelectStrategy } from '../../ducks/strategy'
 const StrategySelector = (props) => {
   const strategies = ['FCFS', 'LCFS', 'RR', 'SJN', 'SRT']
   const radios = strategies.map(strategy => {
-    return <Radio
-      key={strategy}
-      label={strategy}
-      name={strategy}
-      checked={props.strategy === strategy}
-      circle={false}
-      onChange={() => props.SelectStrategy(strategy)}
-    />
+    return <div key={strategy}>
+      <Radio
+        label={strategy}
+        name={strategy}
+        checked={props.strategy === strategy}
+        onChange={() => props.SelectStrategy(strategy)}
+      />
+      {strategy}
+    </div>
   })
 
   return (
-    <Box col={8}>
+    <Box w={2/3}>
       <h5>Strategy</h5>
       {radios}
     </Box>

@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Flex, Box } from 'reflexbox'
-import { Table } from 'rebass'
 import * as styles from './styles.css'
 
 const Timings = (props) => {
@@ -21,20 +20,10 @@ const Timings = (props) => {
 
   return (
     <Flex>
-      <Box
-        col={12}
-      >
+      <Box  w={1}>
         <h5>Timings</h5>
         <Box className={styles.wrapper}>
-          <Table
-            data={tableData}
-            headings={[
-              '#',
-              'Burst time',
-              'Waiting time',
-              'Turnaround time'
-            ]}
-          />
+          <p>put table 'ere</p>
         </Box>
       </Box>
     </Flex>
