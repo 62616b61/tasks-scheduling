@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "nps build",
-    "start": "nps",
+    "start": "node server",
     "dev": "nps dev"
   },
   "author": "Cry",
@@ -40,6 +40,7 @@
     "webpack-messages": "^1.0.0"
   },
   "dependencies": {
+    "express": "^4.15.4",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
