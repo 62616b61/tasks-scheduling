@@ -15,7 +15,7 @@ module.exports = {
     },
     default: {
       description: 'Start project with pm2 on production.',
-      script: `${crossEnv('NODE_ENV=production')} node dist/index.bundle.js`
+      script: `${crossEnv('NODE_ENV=production')} node server/`
     },
     dev: {
       default: 'webpack-dev-server --config ./webpack/webpack.config.babel.js'
